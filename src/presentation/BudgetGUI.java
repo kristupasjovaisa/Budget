@@ -1,15 +1,11 @@
 package presentation;
 
+import presentation.delegates.BudgetGUIDelegate;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-interface BudgetGUIDelegate {
-    void incomeButtonTapped();
-
-    void expenseButtonTapped();
-}
 
 public class BudgetGUI implements ActionListener {
 
@@ -18,9 +14,9 @@ public class BudgetGUI implements ActionListener {
         EXPENSE
     }
 
-    BudgetGUIDelegate delegate;
+   public BudgetGUIDelegate delegate;
 
-    BudgetGUI() {
+   public BudgetGUI() {
         JFrame frame = new JFrame();
         JPanel incomePanel = new JPanel();
         JButton incomeButton = new JButton("Pajamos");

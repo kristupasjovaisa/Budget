@@ -1,8 +1,8 @@
-import presentation.BudgetPresenter;
+import controllers.BudgetController;
 
 public class EntryPoint {
 
     public static void main(String[] args) {
-        new BudgetPresenter();
+        new BudgetController();
     }
 }
