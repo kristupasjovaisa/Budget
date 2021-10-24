@@ -2,12 +2,11 @@ package presentation;
 
 import domain.models.Expense;
 import presentation.delegates.ExpenseGUIDelegate;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import java.util.List;
 
 public class ExpenseGUI implements ActionListener {
 
@@ -28,20 +27,26 @@ public class ExpenseGUI implements ActionListener {
 
         frame.add(panel, BorderLayout.CENTER);
         frame.setTitle("Expense");
+        frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("delegaite " + delegate);
         delegate.addExpense();
     }
 
-    private void setUpList() {
-        listModel.addElement(new Expense(10, LocalDate.now()));
-        listModel.addElement(new Expense(11, LocalDate.now()));
-        listModel.addElement(new Expense(12, LocalDate.now()));
+    public void seedExpense(List<Expense> expenses) {
+        listModel.clear();
+        for (Expense expense : expenses) {
+            listModel.addElement(expense);
+        }
+        frame.pack();
+    }
 
+    private void setUpList() {
         list.setModel(listModel);
     }
 }

@@ -15,6 +15,8 @@ public class AddExpenseGUI implements ActionListener {
     private JButton saveButton = new JButton("SAVE");
     private JLabel sumLabel = new JLabel("Sum ");
     private JLabel dateLabel = new JLabel("Date");
+    private JLabel errorSumLabel = new JLabel("Enter a number");
+    private JLabel errorDateLabel = new JLabel("Enter date by format YYYY-MM-DD");
 
     public AddExpenseGUIDelegate delegate;
 
@@ -29,6 +31,20 @@ public class AddExpenseGUI implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         delegate.expenseSaveButtonTapt(sumTextField.getText(), dateTextField.getText());
+    }
+
+    public void setSumErrorVisibility(boolean visivility) {
+        errorSumLabel.setVisible(visivility);
+        frame.pack();
+    }
+
+    public void setDateVisibility(boolean visibility) {
+        errorDateLabel.setVisible(visibility);
+        frame.pack();
+    }
+
+    public void destroy(){
+        frame.dispose();
     }
 
     private void setUpFrame() {
@@ -50,16 +66,20 @@ public class AddExpenseGUI implements ActionListener {
     }
 
     private void setupSumRow(){
-        JPanel rowPanel = new JPanel();
+        JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rowPanel.add(sumLabel);
         rowPanel.add(sumTextField);
+        rowPanel.add(errorSumLabel);
         panel.add(rowPanel);
+        errorSumLabel.setVisible(false);
     }
 
     private void setupDateRow(){
-        JPanel rowPanel = new JPanel();
+        JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rowPanel.add(dateLabel);
         rowPanel.add(dateTextField);
+        rowPanel.add(errorDateLabel);
         panel.add(rowPanel);
+        errorDateLabel.setVisible(false);
     }
 }

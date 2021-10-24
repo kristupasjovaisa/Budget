@@ -1,5 +1,6 @@
 package controllers;
 
+import domain.models.Expense;
 import domain.models.Income;
 import presentation.*;
 import presentation.delegates.*;
@@ -14,10 +15,14 @@ import java.util.List;
 public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, ExpenseGUIDelegate, AddIncomeGUIDelegate, AddExpenseGUIDelegate {
 
     List<Income> incomeList = new ArrayList<>();
+    List<Expense> expenseList = new ArrayList<>();
+
 
     BudgetGUI budgetGUI = new BudgetGUI();
     IncomeGUI incomeGUI;
     AddIncomeGUI addIncomeGUI;
+    ExpenseGUI expenseGUI;
+    AddExpenseGUI addExpenseGUI;
 
     public BudgetController() {
         budgetGUI.delegate = this;
@@ -31,7 +36,8 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
 
     @Override
     public void expenseButtonTapped() {
-        new ExpenseGUI().delegate = this;
+        expenseGUI = new ExpenseGUI();
+        expenseGUI.delegate = this;
     }
 
     @Override
@@ -42,7 +48,8 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
 
     @Override
     public void addExpense() {
-        new AddExpenseGUI().delegate = this;
+        addExpenseGUI = new AddExpenseGUI();
+        addExpenseGUI.delegate = this;
     }
 
     @Override
@@ -69,15 +76,22 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
 
     @Override
     public void expenseSaveButtonTapt(String sum, String date) {
+        if (sum.isEmpty() || date.isEmpty()) {
+            return;
+        }
         try {
             Double expenseSum = Double.parseDouble(sum);
-            System.out.println("Expense sum " + expenseSum);
+            addExpenseGUI.setSumErrorVisibility(false);
             LocalDate expenseDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            System.out.println("Expense date " + expenseDate);
+        addExpenseGUI.setDateVisibility(false);
+        addExpenseGUI.destroy();
+
+        expenseList.add(new Expense(expenseSum,expenseDate));
+        expenseGUI.seedExpense(expenseList);
         } catch (NumberFormatException e) {
-            System.out.println("Expense sum error" + e);
+        addExpenseGUI.setSumErrorVisibility(true);
         } catch (DateTimeParseException d) {
-            System.out.println("Expense date error" + d);
+         addExpenseGUI.setDateVisibility(true);
         }
 
     }
