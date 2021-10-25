@@ -4,6 +4,7 @@ import domain.models.Expense;
 import domain.models.Income;
 import presentation.*;
 import presentation.delegates.*;
+import services.IncomeService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +24,8 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
     AddIncomeGUI addIncomeGUI;
     ExpenseGUI expenseGUI;
     AddExpenseGUI addExpenseGUI;
+    IncomeService incomeService = new IncomeService();
+
 
     public BudgetController() {
         budgetGUI.delegate = this;
@@ -63,6 +66,7 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
             LocalDate incomeDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             addIncomeGUI.setDateVisibility(false);
             addIncomeGUI.destroy();
+            incomeService.add(incomeSum, incomeDate);
 
             incomeList.add(new Income(incomeSum, incomeDate));
             incomeGUI.seedIncomes(incomeList);
@@ -93,6 +97,5 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
         } catch (DateTimeParseException d) {
          addExpenseGUI.setDateVisibility(true);
         }
-
     }
 }
