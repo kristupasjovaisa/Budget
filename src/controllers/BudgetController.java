@@ -15,9 +15,7 @@ import java.util.List;
 
 public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, ExpenseGUIDelegate, AddIncomeGUIDelegate, AddExpenseGUIDelegate {
 
-    List<Income> incomeList = new ArrayList<>();
     List<Expense> expenseList = new ArrayList<>();
-
 
     BudgetGUI budgetGUI = new BudgetGUI();
     IncomeGUI incomeGUI;
@@ -68,8 +66,7 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
             addIncomeGUI.destroy();
             incomeService.add(incomeSum, incomeDate);
 
-            incomeList.add(new Income(incomeSum, incomeDate));
-            incomeGUI.seedIncomes(incomeList);
+            incomeGUI.seedIncomes(incomeService.get());
 
         } catch (NumberFormatException e) {
             addIncomeGUI.setSumErrorVisibility(true);
