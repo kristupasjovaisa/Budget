@@ -1,9 +1,9 @@
 package controllers;
 
 import domain.models.Expense;
-import domain.models.Income;
 import presentation.*;
 import presentation.delegates.*;
+import services.ExpenseService;
 import services.IncomeService;
 
 import java.time.LocalDate;
@@ -23,6 +23,7 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
     ExpenseGUI expenseGUI;
     AddExpenseGUI addExpenseGUI;
     IncomeService incomeService = new IncomeService();
+    ExpenseService expenseService = new ExpenseService();
 
 
     public BudgetController() {
@@ -86,9 +87,9 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
             LocalDate expenseDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         addExpenseGUI.setDateVisibility(false);
         addExpenseGUI.destroy();
+        expenseService.add(expenseSum, expenseDate);
 
-        expenseList.add(new Expense(expenseSum,expenseDate));
-        expenseGUI.seedExpense(expenseList);
+        expenseGUI.seedExpense(expenseService.get());
         } catch (NumberFormatException e) {
         addExpenseGUI.setSumErrorVisibility(true);
         } catch (DateTimeParseException d) {
