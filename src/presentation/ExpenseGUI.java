@@ -34,7 +34,6 @@ public class ExpenseGUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("delegaite " + delegate);
         delegate.addExpense();
     }
 

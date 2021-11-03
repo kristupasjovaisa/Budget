@@ -1,7 +1,6 @@
 package presentation;
 
 import presentation.delegates.AddIncomeGUIDelegate;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

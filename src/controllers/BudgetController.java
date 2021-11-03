@@ -34,12 +34,14 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
     public void incomeButtonTapped() {
         incomeGUI = new IncomeGUI();
         incomeGUI.delegate = this;
+        incomeGUI.seedIncomes(incomeService.get());
     }
 
     @Override
     public void expenseButtonTapped() {
         expenseGUI = new ExpenseGUI();
         expenseGUI.delegate = this;
+        expenseGUI.seedExpense(expenseService.get());
     }
 
     @Override

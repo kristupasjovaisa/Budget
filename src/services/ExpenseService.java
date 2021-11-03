@@ -31,11 +31,8 @@ public class ExpenseService {
             ResultSet rs = stmt.executeQuery("SELECT id, sum, date FROM expenses");
             while (rs.next()) {
                 int id = rs.getInt("id");
-                System.out.println(id);
                 double sum = rs.getDouble("sum");
-                System.out.println(sum);
                 LocalDate date = rs.getObject("date", LocalDate.class);
-                System.out.println(date);
                 expense.add(new Expense(id, sum, date));
             }
             connection.close();
