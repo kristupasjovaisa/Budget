@@ -1,7 +1,6 @@
 package services;
 
 import domain.models.Income;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,14 +9,15 @@ import java.util.List;
 public class IncomeService {
 
     public void add(double sum, LocalDate date) {
-        Connection connection = BudgetDriverManager.shared.getConnection();
-        String query = "INSERT INTO incomes(sum, date) VALUES (?, ?)";
-
         try {
+            Connection connection = BudgetDriverManager.getInstance().getConnection();
+            String query = "INSERT INTO incomes(sum, date) VALUES (?, ?)";
+
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setDouble(1, sum);
             pstmt.setObject(2, date);
             pstmt.execute();
+            connection.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -25,8 +25,8 @@ public class IncomeService {
 
     public List<Income> get() {
         List<Income> incomes = new ArrayList<>();
-        Connection connection = BudgetDriverManager.shared.getConnection();
         try {
+            Connection connection = BudgetDriverManager.getInstance().getConnection();
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id, sum, date FROM incomes");
             while (rs.next()) {
@@ -38,6 +38,7 @@ public class IncomeService {
                 System.out.println(date);
                 incomes.add(new Income(id, sum, date));
             }
+            connection.close();
         } catch (SQLException e) {
             System.out.println(e);
         }

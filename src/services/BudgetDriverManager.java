@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public final class BudgetDriverManager {
 
-    public static BudgetDriverManager shared = new BudgetDriverManager();
     private Connection connection;
+    private static BudgetDriverManager instance;
 
     private BudgetDriverManager() {
         try {
@@ -18,6 +18,15 @@ public final class BudgetDriverManager {
     }
 
     public Connection getConnection() {
-       return connection;
+        return connection;
+    }
+
+    public static BudgetDriverManager getInstance() throws SQLException {
+        if (instance == null) {
+            instance = new BudgetDriverManager();
+        } else if (instance.getConnection().isClosed()) {
+            instance = new BudgetDriverManager();
+        }
+        return instance;
     }
 }
