@@ -9,25 +9,34 @@ import java.util.List;
 
 public class ExpenseService {
 
-    public void add(double sum, LocalDate date) {
+    IBudgetDriverManager driverManager;
+
+    public ExpenseService(IBudgetDriverManager driverManager) {
+        this.driverManager = driverManager;
+    }
+
+    public boolean add(double sum, LocalDate date) {
         try {
-            Connection connection = BudgetDriverManager.getInstance().getConnection();
+            Connection connection = driverManager.getConnection();
             String query = "INSERT INTO expenses(sum, date) VALUES (?, ?)";
 
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setDouble(1, sum);
             pstmt.setObject(2, date);
+            boolean success =  pstmt.execute();
             pstmt.execute();
             connection.close();
+            return success;
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return false;
     }
 
     public List<Expense> get() {
         List<Expense> expense = new ArrayList<>();
         try {
-            Connection connection = BudgetDriverManager.getInstance().getConnection();
+            Connection connection = driverManager.getConnection();
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id, sum, date FROM expenses");
             while (rs.next()) {

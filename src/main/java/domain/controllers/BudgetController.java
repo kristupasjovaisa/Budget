@@ -23,7 +23,7 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
     ExpenseGUI expenseGUI;
     AddExpenseGUI addExpenseGUI;
     IncomeService incomeService = new IncomeService(BudgetDriverManager.getInstance());
-    ExpenseService expenseService = new ExpenseService();
+    ExpenseService expenseService = new ExpenseService(BudgetDriverManager.getInstance());
 
     public BudgetController() {
         budgetGUI.delegate = this;
