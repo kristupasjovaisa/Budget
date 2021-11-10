@@ -15,7 +15,7 @@ public class IncomeService {
         this.driverManager = driverManager;
     }
 
-    public void add(double sum, LocalDate date) {
+    public boolean add(double sum, LocalDate date) {
         try {
             Connection connection = driverManager.getConnection();
             String query = "INSERT INTO incomes(sum, date) VALUES (?, ?)";
@@ -23,11 +23,13 @@ public class IncomeService {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setDouble(1, sum);
             pstmt.setObject(2, date);
-            pstmt.execute();
+            boolean success =  pstmt.execute();
             connection.close();
+            return success;
         } catch (SQLException e) {
             System.out.println(e);
         }
+        return false;
     }
 
     public List<Income> get() {
