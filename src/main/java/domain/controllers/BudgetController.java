@@ -3,6 +3,7 @@ package domain.controllers;
 import domain.models.Expense;
 import presentation.*;
 import presentation.delegates.*;
+import services.BudgetDriverManager;
 import services.ExpenseService;
 import services.IncomeService;
 
@@ -21,7 +22,7 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
     AddIncomeGUI addIncomeGUI;
     ExpenseGUI expenseGUI;
     AddExpenseGUI addExpenseGUI;
-    IncomeService incomeService = new IncomeService();
+    IncomeService incomeService = new IncomeService(BudgetDriverManager.getInstance());
     ExpenseService expenseService = new ExpenseService();
 
     public BudgetController() {

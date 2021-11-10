@@ -9,9 +9,15 @@ import java.util.List;
 
 public class IncomeService {
 
+    IBudgetDriverManager driverManager;
+
+    public IncomeService(IBudgetDriverManager driverManager) {
+        this.driverManager = driverManager;
+    }
+
     public void add(double sum, LocalDate date) {
         try {
-            Connection connection = BudgetDriverManager.getInstance().getConnection();
+            Connection connection = driverManager.getConnection();
             String query = "INSERT INTO incomes(sum, date) VALUES (?, ?)";
 
             PreparedStatement pstmt = connection.prepareStatement(query);
@@ -27,7 +33,7 @@ public class IncomeService {
     public List<Income> get() {
         List<Income> incomes = new ArrayList<>();
         try {
-            Connection connection = BudgetDriverManager.getInstance().getConnection();
+            Connection connection = driverManager.getConnection();
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id, sum, date FROM incomes");
             while (rs.next()) {
