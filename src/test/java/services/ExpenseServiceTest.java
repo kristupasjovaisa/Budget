@@ -1,5 +1,6 @@
 package services;
 
+import domain.models.Expense;
 import domain.models.Income;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,17 +11,18 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IncomeServiceTest {
+class ExpenseServiceTest {
+
     @Test
     void add() {
-        class MockBudgetDriveManager implements IBudgetDriverManager {
+        class MockBudgetDriveManager implements IBudgetDriverManager{
             @Override
             public Connection getConnection() {
                 try {
                     PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
                     Mockito.when(preparedStatement.execute()).thenReturn(true);
                     Connection jdbcConnection = Mockito.mock(Connection.class);
-                    Mockito.when(jdbcConnection.prepareStatement( "INSERT INTO incomes(sum, date) VALUES (?, ?)")).thenReturn(preparedStatement);
+                    Mockito.when(jdbcConnection.prepareStatement( "INSERT INTO expenses(sum, date) VALUES (?, ?)")).thenReturn(preparedStatement);
                     return jdbcConnection;
                 } catch (SQLException e) {
                     assert(false);
@@ -29,8 +31,8 @@ class IncomeServiceTest {
             }
         }
 
-        IncomeService incomeService = new IncomeService(new MockBudgetDriveManager());
-        boolean output = incomeService.add(2, LocalDate.now());
+        ExpenseService expenseService = new ExpenseService(new MockBudgetDriveManager());
+        boolean output = expenseService.add(2, LocalDate.now());
         boolean expected = true;
         assertEquals(expected, output);
     }
@@ -48,7 +50,7 @@ class IncomeServiceTest {
                     Mockito.when(resultSet.getDouble("sum")).thenReturn(11.4);
 
                     Statement statement = Mockito.mock(Statement.class);
-                    Mockito.when(statement.executeQuery("SELECT id, sum, date FROM incomes")).thenReturn(resultSet);
+                    Mockito.when(statement.executeQuery("SELECT id, sum, date FROM expenses")).thenReturn(resultSet);
 
                     Connection jdbcConnection = Mockito.mock(Connection.class);
                     Mockito.when(jdbcConnection.createStatement()).thenReturn(statement);
@@ -61,9 +63,9 @@ class IncomeServiceTest {
                 return null;
             }
         }
-        IncomeService incomeService = new IncomeService(new MockBudgetDriveManager());
-        List<Income> incomes = incomeService.get();
-        assertEquals(10, incomes.get(0).getId());
-        assertEquals(11.4, incomes.get(0).getSum());
+        ExpenseService expenseService = new ExpenseService(new MockBudgetDriveManager());
+        List<Expense> expenses = expenseService.get();
+        assertEquals(10, expenses.get(0).getId());
+        assertEquals(11.4, expenses.get(0).getSum());
     }
 }
