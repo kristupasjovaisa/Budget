@@ -1,7 +1,7 @@
 package presentation;
 
+import domain.controllers.BudgetController;
 import domain.models.Income;
-import presentation.delegates.IncomeGUIDelegate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class IncomeGUI implements ActionListener {
     JButton button = new JButton("+");
     JList<Income> list = new JList<>();
     DefaultListModel<Income> listModel = new DefaultListModel<>();
-    public IncomeGUIDelegate delegate;
+    public BudgetController delegate;
 
     public IncomeGUI() {
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));

@@ -1,5 +1,6 @@
 package presentation;
-import presentation.delegates.AddExpenseGUIDelegate;
+
+import domain.controllers.BudgetController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ public class AddExpenseGUI implements ActionListener {
     private JLabel errorSumLabel = new JLabel("Enter a number");
     private JLabel errorDateLabel = new JLabel("Enter date by format YYYY-MM-DD");
 
-    public AddExpenseGUIDelegate delegate;
+    public BudgetController delegate;
 
     public AddExpenseGUI(){
         setUpPanel();
