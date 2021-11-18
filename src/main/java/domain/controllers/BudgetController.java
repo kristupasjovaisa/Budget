@@ -1,6 +1,7 @@
 package domain.controllers;
 
 import domain.models.Expense;
+import domain.models.Income;
 import presentation.*;
 import presentation.delegates.*;
 import services.BudgetDriverManager;
@@ -22,6 +23,7 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
     AddIncomeGUI addIncomeGUI;
     ExpenseGUI expenseGUI;
     AddExpenseGUI addExpenseGUI;
+    BalanceGUI balanceGUI;
     IncomeService incomeService = new IncomeService(BudgetDriverManager.getInstance());
     ExpenseService expenseService = new ExpenseService(BudgetDriverManager.getInstance());
 
@@ -41,6 +43,20 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
         expenseGUI = new ExpenseGUI();
         expenseGUI.delegate = this;
         expenseGUI.seedExpense(expenseService.get());
+    }
+
+    @Override
+    public void balanceButtonTapped() {
+        balanceGUI = new BalanceGUI();
+        double balance = 0;
+        for (Income income : incomeService.get()) {
+            balance += income.getSum();
+        }
+
+        for (Expense expense : expenseService.get()) {
+            balance -= expense.getSum();
+        }
+        balanceGUI.setupBalance(balance);
     }
 
     @Override
