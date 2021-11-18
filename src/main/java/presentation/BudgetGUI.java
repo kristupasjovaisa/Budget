@@ -11,7 +11,8 @@ public class BudgetGUI implements ActionListener {
 
     private enum Button {
         INCOME,
-        EXPENSE
+        EXPENSE,
+        BALANCE
     }
 
     public BudgetGUIDelegate delegate;
@@ -21,17 +22,22 @@ public class BudgetGUI implements ActionListener {
         JPanel incomePanel = new JPanel();
         JButton incomeButton = new JButton("Pajamos");
         JButton expenseButton = new JButton("Islaidos");
+        JButton balanceButton = new JButton("Balansas");
 
         incomePanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
-        incomePanel.setLayout(new GridLayout(2, 1));
+        incomePanel.setLayout(new GridLayout(3, 1));
         incomePanel.add(incomeButton);
         incomePanel.add(expenseButton);
+        incomePanel.add(balanceButton);
 
         incomeButton.addActionListener(this);
         incomeButton.setActionCommand(Button.INCOME.name());
 
         expenseButton.addActionListener(this);
         expenseButton.setActionCommand(Button.EXPENSE.name());
+
+        balanceButton.addActionListener(this);
+        balanceButton.setActionCommand(Button.BALANCE.name());
 
         frame.add(incomePanel, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,6 +54,10 @@ public class BudgetGUI implements ActionListener {
                 break;
             case EXPENSE:
                 delegate.expenseButtonTapped();
+                break;
+
+            case BALANCE:
+                delegate.balanceButtonTapped();
                 break;
         }
     }

@@ -24,7 +24,6 @@ public class ExpenseService {
             pstmt.setDouble(1, sum);
             pstmt.setObject(2, date);
             boolean success =  pstmt.execute();
-            pstmt.execute();
             connection.close();
             return success;
         } catch (SQLException e) {
