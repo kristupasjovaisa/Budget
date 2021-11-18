@@ -105,4 +105,8 @@ public class BudgetController {
             addExpenseGUI.setDateVisibility(true);
         }
     }
+
+    public void onRowTapped(Income selectedValue){
+        
+    }
 }
