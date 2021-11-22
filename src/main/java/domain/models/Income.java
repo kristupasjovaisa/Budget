@@ -14,10 +14,6 @@ public class Income {
         this.date = date;
     }
 
-    public Income(double sum, LocalDate date) {
-        this(new Random().nextInt(1000000) + 1000000, sum, date);
-    }
-
     public int getId() {
         return id;
     }

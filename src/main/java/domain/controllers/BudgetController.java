@@ -3,20 +3,14 @@ package domain.controllers;
 import domain.models.Expense;
 import domain.models.Income;
 import presentation.*;
-import presentation.delegates.*;
 import services.BudgetDriverManager;
 import services.ExpenseService;
 import services.IncomeService;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, ExpenseGUIDelegate, AddIncomeGUIDelegate, AddExpenseGUIDelegate {
-
-    List<Expense> expenseList = new ArrayList<>();
+public class BudgetController {
 
     BudgetGUI budgetGUI = new BudgetGUI();
     IncomeGUI incomeGUI;
@@ -24,6 +18,7 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
     ExpenseGUI expenseGUI;
     AddExpenseGUI addExpenseGUI;
     BalanceGUI balanceGUI;
+    EditIncomeGUI editIncomeGUI;
     IncomeService incomeService = new IncomeService(BudgetDriverManager.getInstance());
     ExpenseService expenseService = new ExpenseService(BudgetDriverManager.getInstance());
 
@@ -31,21 +26,18 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
         budgetGUI.delegate = this;
     }
 
-    @Override
     public void incomeButtonTapped() {
         incomeGUI = new IncomeGUI();
         incomeGUI.delegate = this;
         incomeGUI.seedIncomes(incomeService.get());
     }
 
-    @Override
     public void expenseButtonTapped() {
         expenseGUI = new ExpenseGUI();
         expenseGUI.delegate = this;
         expenseGUI.seedExpense(expenseService.get());
     }
 
-    @Override
     public void balanceButtonTapped() {
         balanceGUI = new BalanceGUI();
         double balance = 0;
@@ -59,19 +51,16 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
         balanceGUI.setupBalance(balance);
     }
 
-    @Override
     public void addIncome() {
         addIncomeGUI = new AddIncomeGUI();
         addIncomeGUI.delegate = this;
     }
 
-    @Override
     public void addExpense() {
         addExpenseGUI = new AddExpenseGUI();
         addExpenseGUI.delegate = this;
     }
 
-    @Override
     public void incomeSaveButtonTapped(String sum, String date) {
         if (sum.isEmpty() || date.isEmpty()) {
             return;
@@ -93,7 +82,27 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
         }
     }
 
-    @Override
+    public void incomeEditSaveButtonTapped(int id, String sum, String date) {
+        if (sum.isEmpty() || date.isEmpty()) {
+            return;
+        }
+        try {
+            Double incomeSum = Double.parseDouble(sum);
+            LocalDate incomeDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            editIncomeGUI.setSumErrorVisibility(false);
+            editIncomeGUI.setDateErrorVisibility(false);
+            editIncomeGUI.destroy();
+            incomeService.update(id,incomeSum,incomeDate);
+
+            incomeGUI.seedIncomes(incomeService.get());
+
+        } catch (NumberFormatException e) {
+            editIncomeGUI.setSumErrorVisibility(true);
+        } catch (DateTimeParseException d) {
+            editIncomeGUI.setDateErrorVisibility(true);
+        }
+    }
+
     public void expenseSaveButtonTapt(String sum, String date) {
         if (sum.isEmpty() || date.isEmpty()) {
             return;
@@ -112,5 +121,10 @@ public class BudgetController implements BudgetGUIDelegate, IncomeGUIDelegate, E
         } catch (DateTimeParseException d) {
             addExpenseGUI.setDateVisibility(true);
         }
+    }
+
+    public void onRowTapped(Income selectedValue) {
+        editIncomeGUI = new EditIncomeGUI(selectedValue);
+        editIncomeGUI.delegate = this;
     }
 }

@@ -1,12 +1,11 @@
 package presentation;
 
+import domain.controllers.BudgetController;
 import domain.models.Income;
-import presentation.delegates.IncomeGUIDelegate;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.List;
 
 public class IncomeGUI implements ActionListener {
@@ -16,7 +15,8 @@ public class IncomeGUI implements ActionListener {
     JButton button = new JButton("+");
     JList<Income> list = new JList<>();
     DefaultListModel<Income> listModel = new DefaultListModel<>();
-    public IncomeGUIDelegate delegate;
+
+    public BudgetController delegate;
 
     public IncomeGUI() {
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
@@ -49,6 +49,16 @@ public class IncomeGUI implements ActionListener {
 
     private void setUpList() {
         list.setModel(listModel);
+        list.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    jListValueChanged();
+                }
+            }
+        });
+    }
+
+    private void jListValueChanged() {
+        delegate.onRowTapped(list.getSelectedValue());
     }
 }
-

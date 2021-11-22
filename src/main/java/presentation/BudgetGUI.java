@@ -1,6 +1,6 @@
 package presentation;
 
-import presentation.delegates.BudgetGUIDelegate;
+import domain.controllers.BudgetController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ public class BudgetGUI implements ActionListener {
         BALANCE
     }
 
-    public BudgetGUIDelegate delegate;
+    public BudgetController delegate;
 
     public BudgetGUI() {
         JFrame frame = new JFrame();

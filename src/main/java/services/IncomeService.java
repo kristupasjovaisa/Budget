@@ -23,7 +23,7 @@ public class IncomeService {
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setDouble(1, sum);
             pstmt.setObject(2, date);
-            boolean success =  pstmt.execute();
+            boolean success = pstmt.execute();
             connection.close();
             return success;
         } catch (SQLException e) {
@@ -49,5 +49,23 @@ public class IncomeService {
             System.out.println(e);
         }
         return incomes;
+    }
+
+    public boolean update(int id, double sum, LocalDate date) {
+        try {
+            Connection connection = driverManager.getConnection();
+            String query = "UPDATE incomes SET sum = ?, date = ? WHERE id = ?";
+
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setDouble(1, sum);
+            pstmt.setObject(2, date);
+            pstmt.setInt(3, id);
+            boolean success = pstmt.execute();
+            connection.close();
+            return success;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 }

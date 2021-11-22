@@ -1,7 +1,8 @@
 package presentation;
 
+import domain.controllers.BudgetController;
 import domain.models.Expense;
-import presentation.delegates.ExpenseGUIDelegate;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,7 @@ public class ExpenseGUI implements ActionListener {
     JButton button = new JButton("+");
     DefaultListModel<Expense> listModel = new DefaultListModel<>();
     JList<Expense> list = new JList<>();
-    public ExpenseGUIDelegate delegate;
+    public BudgetController delegate;
 
     public ExpenseGUI() {
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));

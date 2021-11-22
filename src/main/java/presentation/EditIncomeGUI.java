@@ -1,14 +1,13 @@
 package presentation;
 
 import domain.controllers.BudgetController;
-
+import domain.models.Income;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AddIncomeGUI implements ActionListener {
-
+public class EditIncomeGUI implements ActionListener {
     private JFrame frame = new JFrame();
     private JPanel panel = new JPanel();
     private JTextField sumTextField = new JTextField(16);
@@ -20,18 +19,20 @@ public class AddIncomeGUI implements ActionListener {
     private JLabel errorDateLabel = new JLabel("Enter date by format YYYY-MM-DD");
 
     public BudgetController delegate;
+    private Income income;
 
-    public AddIncomeGUI() {
-        setUpPanel();
+    public EditIncomeGUI(Income income) {
+        this.income = income;
+        setupPanel();
         setupSumRow();
         setupDateRow();
-        setUpButtons();
-        setUpFrame();
+        setupButtons();
+        setupFrame();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        delegate.incomeSaveButtonTapped(sumTextField.getText(), dateTextField.getText());
+        delegate.incomeEditSaveButtonTapped(income.getId(),sumTextField.getText(), dateTextField.getText());
     }
 
     public void setSumErrorVisibility(boolean visivility) {
@@ -39,34 +40,35 @@ public class AddIncomeGUI implements ActionListener {
         frame.pack();
     }
 
-    public void setDateVisibility(boolean visibility) {
+    public void setDateErrorVisibility(boolean visibility) {
         errorDateLabel.setVisible(visibility);
         frame.pack();
     }
 
-    public void destroy(){
+    public void destroy() {
         frame.dispose();
     }
 
-    private void setUpFrame() {
-        frame.setTitle("Add incomes");
+    private void setupFrame() {
+        frame.setTitle("Edit incomes");
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    private void setUpPanel() {
+    private void setupPanel() {
         frame.add(panel, BorderLayout.CENTER);
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
         panel.setLayout(new GridLayout(3, 1));
     }
 
-    private void setUpButtons() {
+    private void setupButtons() {
         panel.add(saveButton);
         saveButton.addActionListener(this);
     }
 
     private void setupSumRow() {
+        sumTextField.setText(Double.toString(income.getSum()));
         JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rowPanel.add(sumLabel);
         rowPanel.add(sumTextField);
@@ -76,6 +78,7 @@ public class AddIncomeGUI implements ActionListener {
     }
 
     private void setupDateRow() {
+        dateTextField.setText(income.getDate().toString());
         JPanel rowPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         rowPanel.add(dateLabel);
         rowPanel.add(dateTextField);
