@@ -6,16 +6,11 @@ import presentation.*;
 import services.BudgetDriverManager;
 import services.ExpenseService;
 import services.IncomeService;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BudgetController {
-
-    List<Expense> expenseList = new ArrayList<>();
 
     BudgetGUI budgetGUI = new BudgetGUI();
     IncomeGUI incomeGUI;
@@ -23,6 +18,7 @@ public class BudgetController {
     ExpenseGUI expenseGUI;
     AddExpenseGUI addExpenseGUI;
     BalanceGUI balanceGUI;
+    EditIncomeGUI editIncomeGUI;
     IncomeService incomeService = new IncomeService(BudgetDriverManager.getInstance());
     ExpenseService expenseService = new ExpenseService(BudgetDriverManager.getInstance());
 
@@ -86,6 +82,27 @@ public class BudgetController {
         }
     }
 
+    public void incomeEditSaveButtonTapped(int id, String sum, String date) {
+        if (sum.isEmpty() || date.isEmpty()) {
+            return;
+        }
+        try {
+            Double incomeSum = Double.parseDouble(sum);
+            LocalDate incomeDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            editIncomeGUI.setSumErrorVisibility(false);
+            editIncomeGUI.setDateErrorVisibility(false);
+            editIncomeGUI.destroy();
+            incomeService.update(id,incomeSum,incomeDate);
+
+            incomeGUI.seedIncomes(incomeService.get());
+
+        } catch (NumberFormatException e) {
+            editIncomeGUI.setSumErrorVisibility(true);
+        } catch (DateTimeParseException d) {
+            editIncomeGUI.setDateErrorVisibility(true);
+        }
+    }
+
     public void expenseSaveButtonTapt(String sum, String date) {
         if (sum.isEmpty() || date.isEmpty()) {
             return;
@@ -106,7 +123,8 @@ public class BudgetController {
         }
     }
 
-    public void onRowTapped(Income selectedValue){
-        
+    public void onRowTapped(Income selectedValue) {
+        editIncomeGUI = new EditIncomeGUI(selectedValue);
+        editIncomeGUI.delegate = this;
     }
 }
