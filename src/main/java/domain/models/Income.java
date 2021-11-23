@@ -1,7 +1,6 @@
 package domain.models;
 
 import java.time.LocalDate;
-import java.util.Random;
 
 public class Income {
     private int id;

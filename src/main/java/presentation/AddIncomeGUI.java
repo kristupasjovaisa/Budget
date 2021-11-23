@@ -58,7 +58,7 @@ public class AddIncomeGUI implements ActionListener {
     private void setUpPanel() {
         frame.add(panel, BorderLayout.CENTER);
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new GridLayout(4, 1));
     }
 
     private void setUpButtons() {

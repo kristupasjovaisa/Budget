@@ -6,6 +6,7 @@ import presentation.*;
 import services.BudgetDriverManager;
 import services.ExpenseService;
 import services.IncomeService;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -92,7 +93,7 @@ public class BudgetController {
             editIncomeGUI.setSumErrorVisibility(false);
             editIncomeGUI.setDateErrorVisibility(false);
             editIncomeGUI.destroy();
-            incomeService.update(id,incomeSum,incomeDate);
+            incomeService.update(id, incomeSum, incomeDate);
 
             incomeGUI.seedIncomes(incomeService.get());
 
@@ -101,6 +102,13 @@ public class BudgetController {
         } catch (DateTimeParseException d) {
             editIncomeGUI.setDateErrorVisibility(true);
         }
+    }
+
+    public void incomeDeleteButtonTapped(int id) {
+        editIncomeGUI.destroy();
+        incomeService.delete(id);
+
+        incomeGUI.seedIncomes(incomeService.get());
     }
 
     public void expenseSaveButtonTapt(String sum, String date) {
