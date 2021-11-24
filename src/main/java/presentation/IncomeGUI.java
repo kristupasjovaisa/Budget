@@ -59,6 +59,7 @@ public class IncomeGUI implements ActionListener {
     }
 
     private void jListValueChanged() {
-        delegate.onRowTapped(list.getSelectedValue());
+        delegate.incomesOnRowTapped(list.getSelectedValue());
     }
+
 }

@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class ExpenseGUI implements ActionListener {
@@ -48,6 +50,17 @@ public class ExpenseGUI implements ActionListener {
 
     private void setUpList() {
         list.setModel(listModel);
+        list.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    jListValueChanged();
+                }
+            }
+        });
+    }
+
+    private void jListValueChanged() {
+        delegate.expenseOnRowTapped(list.getSelectedValue());
     }
 }
 
