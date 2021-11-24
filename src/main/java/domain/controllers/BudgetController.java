@@ -20,6 +20,7 @@ public class BudgetController {
     AddExpenseGUI addExpenseGUI;
     BalanceGUI balanceGUI;
     EditIncomeGUI editIncomeGUI;
+    EditExpenseGUI editExpenseGUI;
     IncomeService incomeService = new IncomeService(BudgetDriverManager.getInstance());
     ExpenseService expenseService = new ExpenseService(BudgetDriverManager.getInstance());
 
@@ -131,8 +132,34 @@ public class BudgetController {
         }
     }
 
-    public void onRowTapped(Income selectedValue) {
+    public void expenseEditSaveButtonTapped(int id, String sum, String date) {
+        if (sum.isEmpty() || date.isEmpty()) {
+            return;
+        }
+        try {
+            Double expenseSum = Double.parseDouble(sum);
+            LocalDate expenseDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            editExpenseGUI.setSumErrorVisibility(false);
+            editExpenseGUI.setDateErrorVisibility(false);
+            editExpenseGUI.destroy();
+            expenseService.update(id, expenseSum, expenseDate);
+
+            expenseGUI.seedExpense(expenseService.get());
+
+        } catch (NumberFormatException e) {
+            editExpenseGUI.setSumErrorVisibility(true);
+        } catch (DateTimeParseException d) {
+            editExpenseGUI.setDateErrorVisibility(true);
+        }
+    }
+
+    public void incomesOnRowTapped(Income selectedValue) {
         editIncomeGUI = new EditIncomeGUI(selectedValue);
         editIncomeGUI.delegate = this;
+    }
+
+    public void expenseOnRowTapped(Expense selectedValue){
+        editExpenseGUI = new EditExpenseGUI(selectedValue);
+        editExpenseGUI.delegate = this;
     }
 }
