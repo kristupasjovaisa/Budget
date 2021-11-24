@@ -55,7 +55,6 @@ public class IncomeService {
         try {
             Connection connection = driverManager.getConnection();
             String query = "UPDATE incomes SET sum = ?, date = ? WHERE id = ?";
-
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setDouble(1, sum);
             pstmt.setObject(2, date);
@@ -73,7 +72,6 @@ public class IncomeService {
         try {
             Connection connection = driverManager.getConnection();
             String query = "DELETE FROM incomes WHERE id = ?";
-
             PreparedStatement pstmt = connection.prepareStatement(query);
             pstmt.setInt(1, id);
             boolean success = pstmt.execute();
