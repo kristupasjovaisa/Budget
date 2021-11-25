@@ -67,4 +67,19 @@ public class ExpenseService {
         }
         return false;
     }
+
+    public boolean delete(int id) {
+        try {
+            Connection connection = driverManager.getConnection();
+            String query = "DELETE FROM expenses WHERE id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(query);
+            pstmt.setInt(1, id);
+            boolean success = pstmt.execute();
+            connection.close();
+            return success;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
 }

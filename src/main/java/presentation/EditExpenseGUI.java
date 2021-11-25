@@ -15,6 +15,7 @@ public class EditExpenseGUI implements ActionListener {
     private JTextField sumTextField = new JTextField(16);
     private JTextField dateTextField = new JTextField(16);
     private JButton saveButton = new JButton("SAVE");
+    private JButton deleteButton = new JButton("DELETE");
     private JLabel sumLabel = new JLabel("Sum ");
     private JLabel dateLabel = new JLabel("Date");
     private JLabel errorSumLabel = new JLabel("Enter a number");
@@ -34,7 +35,11 @@ public class EditExpenseGUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        delegate.expenseEditSaveButtonTapped(expense.getId(), sumTextField.getText(), dateTextField.getText());
+        if (e.getActionCommand().equals(saveButton.getActionCommand())) {
+            delegate.expenseEditSaveButtonTapped(expense.getId(), sumTextField.getText(), dateTextField.getText());
+        } else {
+            delegate.expenseDeleteButtonTapped(expense.getId());
+        }
     }
 
     public void setSumErrorVisibility(boolean visivility) {
@@ -61,12 +66,18 @@ public class EditExpenseGUI implements ActionListener {
     private void setupPanel() {
         frame.add(panel, BorderLayout.CENTER);
         panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new GridLayout(4, 1));
     }
 
     private void setupButtons() {
         panel.add(saveButton);
         saveButton.addActionListener(this);
+        deleteButton();
+    }
+
+    private void deleteButton() {
+        panel.add(deleteButton);
+        deleteButton.addActionListener(this);
     }
 
     private void setupSumRow(){
