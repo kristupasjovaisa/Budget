@@ -1,7 +1,6 @@
 package presentation;
 
 import domain.controllers.BudgetController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

@@ -2,7 +2,6 @@ package presentation;
 
 import domain.controllers.BudgetController;
 import domain.models.Income;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
