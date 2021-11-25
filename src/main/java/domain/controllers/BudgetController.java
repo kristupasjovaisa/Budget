@@ -153,6 +153,13 @@ public class BudgetController {
         }
     }
 
+    public void expenseDeleteButtonTapped(int id) {
+        editExpenseGUI.destroy();
+        expenseService.delete(id);
+
+        expenseGUI.seedExpense(expenseService.get());
+    }
+
     public void incomesOnRowTapped(Income selectedValue) {
         editIncomeGUI = new EditIncomeGUI(selectedValue);
         editIncomeGUI.delegate = this;

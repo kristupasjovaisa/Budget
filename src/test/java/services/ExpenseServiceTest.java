@@ -68,4 +68,52 @@ class ExpenseServiceTest {
         assertEquals(10, expenses.get(0).getId());
         assertEquals(11.4, expenses.get(0).getSum());
     }
+
+    @Test
+    void update() {
+        class MockBudgetDriveManager implements IBudgetDriverManager {
+            @Override
+            public Connection getConnection() {
+                try {
+                    PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
+                    Mockito.when(preparedStatement.execute()).thenReturn(true);
+                    Connection jdbcConnection = Mockito.mock(Connection.class);
+                    Mockito.when(jdbcConnection.prepareStatement("UPDATE expenses SET sum = ?, date = ? WHERE id = ?")).thenReturn(preparedStatement);
+                    return jdbcConnection;
+                } catch (SQLException e) {
+                    assert (false);
+                }
+                return null;
+            }
+        }
+
+        ExpenseService expenseService = new ExpenseService(new MockBudgetDriveManager());
+        boolean output = expenseService.update(2,20,LocalDate.now());
+        boolean expected = true;
+        assertEquals(expected, output);
+    }
+
+    @Test
+    void delete() {
+        class MockBudgetDriveManager implements IBudgetDriverManager {
+            @Override
+            public Connection getConnection() {
+                try {
+                    PreparedStatement preparedStatement = Mockito.mock(PreparedStatement.class);
+                    Mockito.when(preparedStatement.execute()).thenReturn(true);
+                    Connection jdbcConnection = Mockito.mock(Connection.class);
+                    Mockito.when(jdbcConnection.prepareStatement("DELETE FROM expenses WHERE id = ?")).thenReturn(preparedStatement);
+                    return jdbcConnection;
+                } catch (SQLException e) {
+                    assert (false);
+                }
+                return null;
+            }
+        }
+
+        ExpenseService expenseService = new ExpenseService(new MockBudgetDriveManager());
+        boolean output = expenseService.delete(3);
+        boolean expected = true;
+        assertEquals(expected, output);
+    }
 }
